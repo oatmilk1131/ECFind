@@ -1,7 +1,17 @@
 import polyline from '@mapbox/polyline';
 import Constants from 'expo-constants';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View, Animated, StatusBar } from 'react-native';
+import React, { useContext, useRef, useState, useEffect } from 'react';
+import { 
+  ActivityIndicator, 
+  View, 
+  Text, 
+  TouchableOpacity, 
+  StyleSheet, 
+  Animated,
+  TextInput,  // Add this
+  Keyboard,   // Add this
+  FlatList    // Add this
+} from 'react-native';
 import MapView, { Callout, Marker, Polyline } from 'react-native-maps';
 import { LocationContext } from '../LocationContext';
 import { MagnifyingGlassIcon } from 'react-native-heroicons/outline';
@@ -140,9 +150,11 @@ const getDirections = async (startLoc, destinationLoc, apiKey) => {
 };
 
 const AddEvacLocOnMap = () => {
+  const ctx = useContext(LocationContext) || {};
+  const location = ctx.location;
+  const requestPermission = ctx.requestPermission;
+  const error = ctx.error;
   const [marker, setMarker] = useState(null);
-  const location = useContext(LocationContext);
-  const [errorMsg, setErrorMsg] = useState(null);
   const [closeDirectionsButtonAppear, setCloseDirectionsButtonAppear] = useState(false);
   const [directionsPressed, setDirectionsPressed] = useState(false);
   const [markerPressed, setMarkerPressed] = useState(false);
@@ -201,16 +213,7 @@ const AddEvacLocOnMap = () => {
     moveTo(position);
   }
   
-  if (!location) {
-    return (
-      <View style={styles.loader}>
-        <ActivityIndicator size="large" color="#007AFF" />
-        <Text>{errorMsg ?? 'Getting your location...'}</Text>
-      </View>
-    );
-  }
-
-  const handleSearchIconPress = () => {
+const handleSearchIconPress = () => {
     setSearchPressed(!searchPressed);
     Animated.timing(slideAnim, {
       toValue: searchPressed ? -100 : 0,
@@ -218,6 +221,25 @@ const AddEvacLocOnMap = () => {
       useNativeDriver: true,
     }).start();
   }
+
+  if (!location) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text style={{ marginTop: 8 }}>{error ?? 'Getting your location...'}</Text>
+        {typeof requestPermission === 'function' && (
+          <TouchableOpacity
+            onPress={requestPermission}
+            style={{ marginTop: 12, paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#007AFF', borderRadius: 8 }}
+          >
+            <Text style={{ color: 'white' }}>Retry location</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  }
+
+  
 
   return (
     <View style={styles.container}>

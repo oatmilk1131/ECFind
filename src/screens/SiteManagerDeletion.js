@@ -40,7 +40,7 @@ export default function SiteManagerDeletion({ setCurrentScreen }) {
   return (
     <View style={styles.container}>
       <View style={styles.lowerHeader}>
-        <Text style={styles.title}>SITE MANAGER DELETION</Text>
+        <Text style={styles.title}>SITE MANAGERS</Text>
         <View style={styles.line} />
       </View>
 
@@ -68,7 +68,7 @@ export default function SiteManagerDeletion({ setCurrentScreen }) {
 
       <TouchableOpacity
         style={styles.backButton}
-        onPress={() => setCurrentScreen('DeveloperMenu')}
+        onPress={() => navigation.navigate('DeveloperMenu')}
       >
         <Text style={styles.backText}>Return to Menu</Text>
       </TouchableOpacity>

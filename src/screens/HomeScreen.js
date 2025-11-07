@@ -48,17 +48,17 @@ const HomeScreen = ({ navigation }) => {
         
       </MapBackground>
       
-      {/* only render BottomSheet when a marker is selected */}
+    
       {selectedMarker && (
       <BottomSheet
-        height={bottomSheetHeight} // Pass the Animated.Value
+        height={bottomSheetHeight}
         minHeight={BOTTOM_SHEET_MIN_HEIGHT}
         maxHeight={BOTTOM_SHEET_MAX_HEIGHT}
         isExpanded={isExpanded}
         onExpand={handleExpand}
         onCollapse={handleCollapse}
       >
-        {/* details */}
+       
       </BottomSheet>
       )}
 

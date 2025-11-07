@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 export default StyleSheet.create({
   headerContainer: {
@@ -204,5 +206,41 @@ export default StyleSheet.create({
   iconContainer: {
     flexDirection: 'row',
     gap: 15
+  },
+  dropdownContainer: {
+    width: 160,
+    position: "relative", // Important for absolute positioning inside
+  },
+  dropdownButton: {
+    padding: 10,
+    backgroundColor: "#e6e6e6",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+  dropdownButtonText: {
+    fontSize: 15,
+    color: "#333",
+    textAlign: "center",
+  },
+  dropdownList: {
+    position: "absolute",
+    top: 48,
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    elevation: 10, // Android shadow
+    zIndex: 1000, // iOS stacking
+    maxHeight: 150,
+  },
+  dropdownItem: {
+    padding: 10,
+  },
+  dropdownItemText: {
+    fontSize: 15,
+    color: "#333",
   },
 });

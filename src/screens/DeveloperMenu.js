@@ -29,30 +29,37 @@ export default function DeveloperMenu({ setCurrentScreen }) {
       <View style={styles.centerContent}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => setCurrentScreen('RegistrationRequests')}
+          onPress={() => navigation.navigate('RegistrationRequests')}
         >
           <Text style={styles.buttonText}>Registration Requests</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => setCurrentScreen('DeleteEvacuationSites')}
+          onPress={() => navigation.navigate('DeleteEvacuationSites')}
         >
           <Text style={styles.buttonText}>Delete Evacuation Sites</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => setCurrentScreen('AddEvacuationSite')}
+          onPress={() => navigation.navigate('AddEvacuationSite')}
         >
           <Text style={styles.buttonText}>Add Evacuation Sites</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => setCurrentScreen('SiteManagerDeletion')}
+          onPress={() => navigation.navigate('ChangeSiteManagerScreen')}
         >
-          <Text style={styles.buttonText}>Site Manager Deletion</Text>
+          <Text style={styles.buttonText}>Assigning Managers</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('SiteManagerDeletion')}
+        >
+          <Text style={styles.buttonText}>Site Managers</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>

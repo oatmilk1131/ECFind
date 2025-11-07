@@ -1,7 +1,7 @@
 import polyline from '@mapbox/polyline';
 import Constants from 'expo-constants';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, FlatList, Keyboard, StyleSheet, Text, TextInput, TouchableOpacity, View, Animated, StatusBar } from 'react-native';
+import { ActivityIndicator, View, Text, TouchableOpacity, Animated, StyleSheet, TextInput, Keyboard, FlatList } from 'react-native';
 import MapView, { Callout, Marker, Polyline } from 'react-native-maps';
 import { LocationContext } from '../LocationContext';
 import { MagnifyingGlassIcon } from 'react-native-heroicons/outline';
@@ -140,8 +140,11 @@ const getDirections = async (startLoc, destinationLoc, apiKey) => {
 };
 
 const GoogleMap = ({ onMarkerPress }) => {
+  const ctx = useContext(LocationContext) || {};
+  const location = ctx.location;
+  const requestPermission = ctx.requestPermission;
+  const error = ctx.error;
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const location = useContext(LocationContext);
   const [closeDirectionsButtonAppear, setCloseDirectionsButtonAppear] = useState(false);
   const [directionsPressed, setDirectionsPressed] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null); 
@@ -205,7 +208,15 @@ const GoogleMap = ({ onMarkerPress }) => {
       return (
         <View style={styles.loader}>
           <ActivityIndicator size="large" color="#007AFF" />
-          <Text>{errorMsg ?? 'Getting your location...'}</Text>
+          <Text style={{ marginTop: 8 }}>{error ?? 'Getting your location...'}</Text>
+          {typeof requestPermission === 'function' && (
+            <TouchableOpacity
+              onPress={requestPermission}
+              style={{ marginTop: 12, paddingVertical: 10, paddingHorizontal: 16, backgroundColor: '#007AFF', borderRadius: 8 }}
+            >
+              <Text style={{ color: 'white' }}>Retry location</Text>
+            </TouchableOpacity>
+          )}
         </View>
       );
     }

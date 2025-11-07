@@ -79,7 +79,7 @@ export default function RegistrationRequests({ setCurrentScreen }) {
         showsVerticalScrollIndicator={false}
       />
 
-      <TouchableOpacity style={styles.backButton} onPress={() => setCurrentScreen('DeveloperMenu')}>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('DeveloperMenu')}>
         <Text style={styles.backText}>Return to menu</Text>
       </TouchableOpacity>
     </View>

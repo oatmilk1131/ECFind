@@ -50,7 +50,7 @@ const MapScreen = ({ navigation }) => {
         minHeight={BOTTOM_SHEET_MIN_HEIGHT}
         maxHeight={BOTTOM_SHEET_MAX_HEIGHT}
       >
-        {/* Add your bottom sheet content here */}
+      
       </BottomSheet>
     </View>
   );
