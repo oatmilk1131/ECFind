@@ -3,6 +3,7 @@ import { View, Text, Image, Alert } from 'react-native';
 import StyleButton from '../components/StyleButton';
 import StyleTextInput from '../components/StyleTextInput';
 import AppBackground from '../components/AppBackground';
+import BackArrow from '../components/BackArrow';
 import { useAuth } from '../context/Auth';
 import { createSiteManagerRequest, loadSiteManagerRequests } from '../utils/dataService';
 
@@ -69,6 +70,9 @@ export default function ApplyManagerScreen({ navigation }) {
   return (
     <AppBackground>
       <View className="flex-1">
+        <View className="px-4 pt-6">
+          <BackArrow fallback="Home" />
+        </View>
         <View className=" justify-center items-center">
             <Image source={logo} className="w-full h-96 resize-contain" />
         </View>

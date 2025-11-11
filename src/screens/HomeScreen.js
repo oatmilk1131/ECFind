@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, SafeAreaView, Animated, StatusBar, Dimens
 import MapBackground from '../components/MapBackground';
 import BottomSheet from '../components/BottomSheet';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
+import BackArrow from '../components/BackArrow';
 import { useAuth } from '../context/Auth';
 
 const BOTTOM_SHEET_MAX_HEIGHT = Math.round(Dimensions.get('window').height * 0.8);
@@ -44,6 +45,7 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView className="flex-1 bg-white" >
       <StatusBar barStyle="dark-content" backgroundColor="#f8f9fa" />
       <View className="flex-row justify-between items-center px-4 py-2">
+        <BackArrow className="mr-2" />
         {['manager', 'admin', 'developer'].includes(user?.role) && (
           <TouchableOpacity className="bg-blue-500 px-4 py-2 rounded-full" onPress={() => navigation.navigate('Map')}>
             <Text className="text-white font-semibold">Manage Sites</Text>

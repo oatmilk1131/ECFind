@@ -5,6 +5,7 @@ import Icon from '../components/Icon';
 import styles from '../styles/styles';
 import StyleButton from '../components/StyleButton';
 import { useAuth } from '../context/Auth';
+import BackArrow from '../components/BackArrow';
 import {
   loadSiteManagerRequests,
   updateSiteManagerRequestStatus,
@@ -65,9 +66,7 @@ export default function RegistrationRequests({ navigation }) {
   return (
     <View style={styles.container}>
       <View className="flex-row justify-between items-center px-4 mt-4">
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text className="text-blue-600 font-semibold">Back</Text>
-        </TouchableOpacity>
+        <BackArrow />
         <TouchableOpacity onPress={() => navigation.navigate('UserProfile')}>
           <Text className="text-blue-600 font-semibold">Profile</Text>
         </TouchableOpacity>

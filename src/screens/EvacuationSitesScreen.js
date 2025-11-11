@@ -5,6 +5,7 @@ import styles from '../styles/styles';
 import StyleButton from '../components/StyleButton';
 import { useAuth } from '../context/Auth';
 import { useFocusEffect } from '@react-navigation/native';
+import BackArrow from '../components/BackArrow';
 
 const EvacuationSitesScreen = ({ navigation, route }) => {
   const [sites, setSites] = useState([]);
@@ -59,7 +60,15 @@ const EvacuationSitesScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Evacuation Sites</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingTop: 16 }}>
+        <BackArrow />
+        <Text style={styles.title}>Evacuation Sites</Text>
+        <StyleButton
+          title="Back to Map"
+          onPress={() => navigation.navigate('Map')}
+          className="px-4 py-2"
+        />
+      </View>
       <FlatList
         data={sites}
         keyExtractor={(item) => item.id.toString()}

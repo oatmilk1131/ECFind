@@ -5,6 +5,7 @@ import styles from '../styles/styles';
 import { loadEvacuationSites, deleteEvacuationSite } from '../utils/dataService';
 import { useAuth } from '../context/Auth';
 import StyleButton from '../components/StyleButton';
+import BackArrow from '../components/BackArrow';
 
 export default function DeleteEvacuationSites({ navigation }) {
   const { user } = useAuth();
@@ -48,9 +49,7 @@ export default function DeleteEvacuationSites({ navigation }) {
   return (
     <View style={styles.container}>
       <View className="flex-row justify-between items-center px-4 mt-4">
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text className="text-blue-600 font-semibold">Back</Text>
-        </TouchableOpacity>
+        <BackArrow />
         <TouchableOpacity onPress={() => navigation.navigate('UserProfile')}>
           <Text className="text-blue-600 font-semibold">Profile</Text>
         </TouchableOpacity>

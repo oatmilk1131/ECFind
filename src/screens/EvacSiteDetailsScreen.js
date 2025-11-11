@@ -6,6 +6,7 @@ import { pickFromGallery, pickFromCamera, uploadAssets } from '../components/Ima
 import AppBackground from '../components/AppBackground';
 import { upsertEvacuationSite, updateSiteImages, updateSiteSlots, updateSiteStatus } from '../utils/dataService';
 import { useAuth } from '../context/Auth';
+import BackArrow from '../components/BackArrow';
 
 const MAX_SITE_IMAGES = 4;
 
@@ -355,7 +356,10 @@ export default function EvacSiteDetailsScreen({ navigation, route }) {
     return (
         <AppBackground>
             <View className="flex-1 p-5">
-                <Text className="text-2xl font-bold mb-5">Evacuation Site Details</Text>
+                <View className="flex-row items-center mb-3">
+                    <BackArrow />
+                    <Text className="text-2xl font-bold ml-4">Evacuation Site Details</Text>
+                </View>
 
                 <ScrollView className="flex-1">
                     {/* Site Information Form */}

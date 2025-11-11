@@ -5,6 +5,7 @@ import StyleButton from '../components/StyleButton';
 import StyleTextInput from '../components/StyleTextInput';
 import AppBackground from '../components/AppBackground';
 import { authenticateUser } from '../utils/dataService';
+import BackArrow from '../components/BackArrow';
 
 export default function LoginScreen({ navigation }) {
   const { logIn } = useAuth();
@@ -25,6 +26,9 @@ export default function LoginScreen({ navigation }) {
   return (
     <AppBackground>
       <View>
+        <View className="px-4 pt-6">
+          <BackArrow fallback="Main" />
+        </View>
         <View className=" justify-center items-center">
           <Image source={logo} className="w-full h-96 resize-contain" />
         </View>

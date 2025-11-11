@@ -4,6 +4,7 @@ import { useAuth } from '../context/Auth';
 import StyleButton from '../components/StyleButton';
 import StyleTextInput from '../components/StyleTextInput';
 import AppBackground from '../components/AppBackground';
+import BackArrow from '../components/BackArrow';
 
 
 const logo = require('../assets/images/logo.png');
@@ -49,6 +50,9 @@ export default function SignUpScreen({ navigation }) {
   return (
     <AppBackground>
       <View className="flex-1">
+        <View className="px-4 pt-6">
+          <BackArrow fallback="Main" />
+        </View>
         <View className=" justify-center items-center">
             <Image source={logo} className="w-full h-96 resize-contain" />
         </View>

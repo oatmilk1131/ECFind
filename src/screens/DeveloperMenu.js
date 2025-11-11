@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ScrollView, TouchableOpacity } from 'react-native';
 import { loadDevelopers } from '../utils/dataService';
 import styles from '../styles/styles';
+import BackArrow from '../components/BackArrow';
 
 export default function DeveloperMenu({ navigation }) {
   const [developers, setDevelopers] = useState([]);
@@ -14,9 +15,7 @@ export default function DeveloperMenu({ navigation }) {
   return (
     <ScrollView style={styles.container}>
       <View className="flex-row justify-between items-center px-4 mt-4">
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text className="text-blue-600 font-semibold">Back</Text>
-        </TouchableOpacity>
+        <BackArrow />
         <TouchableOpacity onPress={() => navigation.navigate('UserProfile')}>
           <Text className="text-blue-600 font-semibold">Profile</Text>
         </TouchableOpacity>

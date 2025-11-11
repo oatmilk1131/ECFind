@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { loadSiteManagers, loadEvacuationSites } from '../utils/dataService';
 import styles from '../styles/styles';
+import BackArrow from '../components/BackArrow';
 
-export default function ChangeSiteManagerScreen({ setCurrentScreen }) {
+export default function ChangeSiteManagerScreen({ navigation }) {
   const [managers, setManagers] = useState([]);
   const [sites, setSites] = useState([]);
 
@@ -21,7 +22,12 @@ export default function ChangeSiteManagerScreen({ setCurrentScreen }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Site Managers</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 16 }}>
+        <BackArrow />
+        <View style={{ flex: 1 }}>
+          <Text style={styles.title}>Site Managers</Text>
+        </View>
+      </View>
       <FlatList
         data={managers}
         keyExtractor={(item) => item.id.toString()}
@@ -40,6 +46,5 @@ export default function ChangeSiteManagerScreen({ setCurrentScreen }) {
     </View>
   );
 }
-
 
 
