@@ -1,52 +1,45 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Alert } from 'react-native';
 import Icon from '../components/Icon';
 import styles from '../styles/styles';
+import { useDatabase } from '../context/DatabaseContext';
 
-export default function RegistrationRequests({ setCurrentScreen }) {
-  const initialUsers = [
-    'John Doe - 09956982021',
-    'Jane Smith - 09556323456',
-    'Mike Johnson - 09451235752',
-    'Sarah Wilson - 09564123789',
-    'Tom Brown - 091542032',
-    'Emily Davis - 09452163652',
-    'Robert Wilson - 09746985210',
-    'Lisa Anderson - 09432612056'
-  ];
-  const [users, setUsers] = useState(initialUsers);
+export default function RegistrationRequests({ navigation }) {
+  const { pendingRegistrations, removePendingRegistration } = useDatabase();
 
-  const handleApprove = (user) => {
+  const requests = useMemo(() => pendingRegistrations ?? [], [pendingRegistrations]);
+
+  const handleApprove = (request) => {
     Alert.alert(
       'Approve Registration',
-      `Approve registration for ${user}?`,
+      `Approve registration for ${request.name}?`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Approve',
           onPress: () => {
-            setUsers(users.filter(u => u !== user));
-            Alert.alert('Success', 'Registration approved successfully');
-          }
-        }
+            removePendingRegistration(request.id);
+            Alert.alert('Success', `${request.name} has been approved.`);
+          },
+        },
       ]
     );
   };
 
-  const handleReject = (user) => {
+  const handleReject = (request) => {
     Alert.alert(
       'Reject Registration',
-      `Reject registration for ${user}?`,
+      `Reject registration for ${request.name}?`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Reject',
           style: 'destructive',
           onPress: () => {
-            setUsers(users.filter(u => u !== user));
-            Alert.alert('Success', 'Registration rejected successfully');
-          }
-        }
+            removePendingRegistration(request.id);
+            Alert.alert('Success', `${request.name} has been removed.`);
+          },
+        },
       ]
     );
   };
@@ -59,11 +52,15 @@ export default function RegistrationRequests({ setCurrentScreen }) {
       </View>
 
       <FlatList
-        data={users}
-        keyExtractor={(item) => item}
+        data={requests}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Text style={styles.listText}>{item}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.listText}>{item.name}</Text>
+              <Text style={{ color: '#6b7280', fontSize: 12 }}>{item.contactNumber}</Text>
+              <Text style={{ color: '#6b7280', fontSize: 12 }}>Role: {item.requestedRole}</Text>
+            </View>
             <View style={styles.iconContainer}>
               <TouchableOpacity onPress={() => handleApprove(item)}>
                 <Icon name="checkmark-circle" size={24} color="green" />
@@ -77,6 +74,11 @@ export default function RegistrationRequests({ setCurrentScreen }) {
         style={styles.list}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View style={{ alignItems: 'center', paddingVertical: 40 }}>
+            <Text style={{ color: '#6b7280' }}>No pending registration requests.</Text>
+          </View>
+        }
       />
 
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('DeveloperMenu')}>

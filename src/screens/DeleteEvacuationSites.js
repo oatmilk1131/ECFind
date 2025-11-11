@@ -1,37 +1,33 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Alert } from 'react-native';
 import Icon from '../components/Icon';
 import styles from '../styles/styles';
+import { useDatabase } from '../context/DatabaseContext';
 
-export default function DeleteEvacuationSites({ setCurrentScreen }) {
-  const initialSites = [
-    'Site 1 - Main Evacuation Center',
-    'Site 2 - Community Hall',
-    'Site 3 - School Gym',
-    'Site 4 - Sports Complex',
-    'Site 5 - Public Library',
-    'Site 6 - Park Pavilion',
-    'Site 7 - Emergency Shelter',
-    'Site 8 - Community Center',
-    'Site 9 - High School Auditorium',
-    'Site 10 - Municipal Building'
-  ];
-  const [sites, setSites] = useState(initialSites);
+export default function DeleteEvacuationSites({ navigation }) {
+  const { evacSites, removeEvacSite } = useDatabase();
 
-  const handleDeleteSite = (siteToDelete) => {
+  const sites = useMemo(
+    () =>
+      evacSites.map((site) => ({
+        id: site.id,
+        title: site.name,
+        subtitle: site.address,
+      })),
+    [evacSites]
+  );
+
+  const handleDeleteSite = (site) => {
     Alert.alert(
       'Confirm Deletion',
-      `Are you sure you want to delete "${siteToDelete}"?`,
+      `Are you sure you want to delete "${site.title}"?`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'Delete',
           style: 'destructive',
-          onPress: () => {
-            setSites(sites.filter(site => site !== siteToDelete));
-            Alert.alert('Success', 'Evacuation site deleted successfully');
-          }
-        }
+          onPress: () => removeEvacSite(site.id),
+        },
       ]
     );
   };
@@ -45,10 +41,13 @@ export default function DeleteEvacuationSites({ setCurrentScreen }) {
 
       <FlatList
         data={sites}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
-            <Text style={styles.listText}>{item}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.listText}>{item.title}</Text>
+              <Text style={{ color: '#6b7280', fontSize: 12 }}>{item.subtitle}</Text>
+            </View>
             <View style={styles.iconContainer}>
               <TouchableOpacity onPress={() => handleDeleteSite(item)}>
                 <Icon name="trash" size={22} color="red" />
@@ -59,6 +58,11 @@ export default function DeleteEvacuationSites({ setCurrentScreen }) {
         style={styles.list}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View style={{ alignItems: 'center', paddingVertical: 40 }}>
+            <Text style={{ color: '#6b7280' }}>No evacuation sites to remove.</Text>
+          </View>
+        }
       />
 
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('DeveloperMenu')}>

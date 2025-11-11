@@ -16,6 +16,8 @@ import SiteManagerDeletion from '../screens/SiteManagerDeletion';
 import DeveloperMenu from '../screens/DeveloperMenu';
 import RegistrationRequests from '../screens/RegistrationRequests';
 import DeleteEvacuationSites from '../screens/DeleteEvacuationSites';
+import DevelopersScreen from '../screens/DevelopersScreen';
+import UsersDirectoryScreen from '../screens/UsersDirectoryScreen';
 import Constants from 'expo-constants';
 
 const Stack = createStackNavigator();
@@ -65,10 +67,12 @@ export default function AppNavigator() {
             <Stack.Screen name="EvacuationSitesScreen" component={EvacuationSitesScreen}/>
             <Stack.Screen name="AddEvacuationSite" component={AddEvacuationSiteScreen}/>
             <Stack.Screen name="ChangeSiteManagerScreen" component={ChangeSiteManagerScreen}/>
-            <Stack.Screen name="SiteManagerDeletetionScreen" component={SiteManagerDeletion}/>
+            <Stack.Screen name="SiteManagerDeletion" component={SiteManagerDeletion}/>
             <Stack.Screen name="DeveloperMenu" component={DeveloperMenu}/>
             <Stack.Screen name="RegistrationRequests" component={RegistrationRequests}/>
             <Stack.Screen name="DeleteEvacuationSites" component={DeleteEvacuationSites}/>
+            <Stack.Screen name="DevelopersList" component={DevelopersScreen}/>
+            <Stack.Screen name="UsersDirectory" component={UsersDirectoryScreen}/>
           </>
         )}
         

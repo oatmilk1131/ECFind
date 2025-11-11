@@ -9,7 +9,9 @@ const Icon = ({ name, size = 24, color = 'black' }) => {
     'close-circle': '✗',
     'search': '🔍',
     'person-circle-outline': '👤',
-    'eye': '👁️'
+    'eye': '👁️',
+    'code-slash': '💻',
+    'person': '🧑',
   };
 
   return (

@@ -1,38 +1,42 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, FlatList, Alert } from 'react-native';
 import Icon from '../components/Icon';
 import styles from '../styles/styles';
+import { useDatabase } from '../context/DatabaseContext';
 
-export default function SiteManagerDeletion({ setCurrentScreen }) {
-  const [users, setUsers] = useState([
-    { id: "1", name: "John Doe - Main Center" },
-    { id: "2", name: "Jane Smith - Community Hall" },
-    { id: "3", name: "Mike Johnson - School Gym" },
-    { id: "4", name: "Sarah Wilson - Sports Complex" },
-    { id: "5", name: "Tom Brown - Public Library" },
-    { id: "6", name: "Emily Davis - Park Pavilion" },
-    { id: "7", name: "Robert Lee - Emergency Shelter" },
-    { id: "8", name: "Maria Garcia - Community Center" },
-  ]);
+export default function SiteManagerDeletion({ navigation }) {
+  const { siteManagers, removeSiteManager } = useDatabase();
 
-  const handleViewDetails = (user) => {
-    Alert.alert('Manager Info', `Viewing details for: ${user.name}`);
+  const data = useMemo(
+    () =>
+      siteManagers.map((manager) => ({
+        id: manager.id,
+        name: manager.user?.name ?? 'Unknown manager',
+        siteName: manager.site?.name ?? 'Unassigned',
+        contactNumber: manager.user?.contactNumber ?? 'N/A',
+      })),
+    [siteManagers]
+  );
+
+  const handleViewDetails = (manager) => {
+    Alert.alert(
+      manager.name,
+      `Assigned site: ${manager.siteName}\nContact: ${manager.contactNumber}`,
+      [{ text: 'Close', style: 'default' }]
+    );
   };
 
-  const handleDelete = (user) => {
+  const handleDelete = (manager) => {
     Alert.alert(
-      "Delete Site Manager",
-      `Are you sure you want to delete "${user.name}"?`,
+      'Delete Site Manager',
+      `Remove ${manager.name} from the directory?`,
       [
-        { text: "Cancel", style: "cancel" },
+        { text: 'Cancel', style: 'cancel' },
         {
-          text: "Delete",
-          style: "destructive",
-          onPress: () => {
-            setUsers(users.filter(u => u.id !== user.id));
-            Alert.alert("Success", "Site manager deleted successfully");
-          }
-        }
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => removeSiteManager(manager.id),
+        },
       ]
     );
   };
@@ -45,12 +49,15 @@ export default function SiteManagerDeletion({ setCurrentScreen }) {
       </View>
 
       <FlatList
-        data={users}
+        data={data}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.listItem}>
             <Icon name="person-circle-outline" size={24} color="black" />
-            <Text style={styles.itemText}>{item.name}</Text>
+            <View style={{ flex: 1, marginLeft: 12 }}>
+              <Text style={styles.itemText}>{item.name}</Text>
+              <Text style={{ color: '#6b7280', fontSize: 12 }}>Site: {item.siteName}</Text>
+            </View>
             <View style={styles.iconContainer}>
               <TouchableOpacity onPress={() => handleViewDetails(item)}>
                 <Icon name="eye" size={24} color="blue" />
@@ -64,6 +71,11 @@ export default function SiteManagerDeletion({ setCurrentScreen }) {
         style={styles.list}
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <View style={{ alignItems: 'center', paddingVertical: 40 }}>
+            <Text style={{ color: '#6b7280' }}>No site managers recorded.</Text>
+          </View>
+        }
       />
 
       <TouchableOpacity

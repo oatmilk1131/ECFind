@@ -7,6 +7,7 @@ import { LocationContext } from '../LocationContext';
 import { MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useDatabase } from '../context/DatabaseContext';
 
 function InputAutocomplete({
   label,
@@ -139,12 +140,13 @@ const getDirections = async (startLoc, destinationLoc, apiKey) => {
   }
 };
 
-const GoogleMap = ({ onMarkerPress }) => {
+const GoogleMap = ({ onMarkerPress, selectedSite }) => {
   const ctx = useContext(LocationContext) || {};
   const location = ctx.location;
   const requestPermission = ctx.requestPermission;
   const error = ctx.error;
-  const [selectedMarker, setSelectedMarker] = useState(null);
+  const { evacSites } = useDatabase();
+  const [activeSite, setActiveSite] = useState(null);
   const [closeDirectionsButtonAppear, setCloseDirectionsButtonAppear] = useState(false);
   const [directionsPressed, setDirectionsPressed] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null); 
@@ -174,6 +176,18 @@ const GoogleMap = ({ onMarkerPress }) => {
     }
   };
 
+  useEffect(() => {
+    if (selectedSite) {
+      setActiveSite(selectedSite);
+      setMarkerPressed(true);
+      moveTo({ latitude: selectedSite.latitude, longitude: selectedSite.longitude });
+    } else {
+      setActiveSite(null);
+      setMarkerPressed(false);
+      setRouteCoords([]);
+    }
+  }, [selectedSite]);
+
   const onPlaceSelected = (details, flag) => {
     // guard if geometry/location missing
     const lat = details?.geometry?.location?.lat;
@@ -193,16 +207,22 @@ const GoogleMap = ({ onMarkerPress }) => {
   }
   useEffect(() => {
     const fetchRoute = async () => {
-      if (!location?.coords) return;
-      if (!selectedMarker) return;
+      if (!location?.coords || !activeSite) {
+        return;
+      }
 
-      const origin = {latitude: location?.coords.latitude, longitude: location?.coords.longitude}
-      const destination = {latitude: selectedMarker?.latitude, longitude: selectedMarker?.longitude}
-      const coords = await getDirections(origin, destination, GOOGLE_API_KEY,);
+      const origin = { latitude: location.coords.latitude, longitude: location.coords.longitude };
+      const destination = { latitude: activeSite.latitude, longitude: activeSite.longitude };
+      const coords = await getDirections(origin, destination, GOOGLE_API_KEY);
       setRouteCoords(coords);
     };
     fetchRoute();
-  }, [directionsPressed]);
+  }, [
+    directionsPressed,
+    activeSite,
+    location?.coords?.latitude,
+    location?.coords?.longitude,
+  ]);
   
     if (!location) {
       return (
@@ -221,16 +241,15 @@ const GoogleMap = ({ onMarkerPress }) => {
       );
     }
 
-     const handleMarkerPress = (coordinate) => {
-      setSelectedMarker(coordinate);
+    const handleMarkerPress = (site) => {
+      setActiveSite(site);
       setMarkerPressed(true);
       lastMarkerPressRef.current = Date.now();
-      // ignore any subsequent map presses for 800ms to avoid MapView onPress clearing selection
       ignoreMapPressUntil.current = Date.now() + 800;
       if (typeof onMarkerPress === 'function') {
-        onMarkerPress(coordinate);
+        onMarkerPress(site);
       }
-  };
+    };
 
   const handleCloseDirectionsPress = () => {
     setCloseDirectionsButtonAppear(false);
@@ -285,8 +304,8 @@ const GoogleMap = ({ onMarkerPress }) => {
          }
 
          // only clear selection if there is a selected marker
-         if (selectedMarker) {
-           setSelectedMarker(null);
+         if (activeSite) {
+           setActiveSite(null);
            setMarkerPressed(false);
            if (typeof onMarkerPress === 'function') {
              onMarkerPress(null);
@@ -303,18 +322,23 @@ const GoogleMap = ({ onMarkerPress }) => {
        showsUserLocation = {true}
        >
         
-        <Marker
-          coordinate={{
-            latitude: 14.649102416560252,
-            longitude: 121.04385011188928
-          }}
-          onPress={()=> handleMarkerPress({
-            latitude: 14.649102416560252,
-            longitude: 121.04385011188928
-          })}
-        >
-          <Callout />
-        </Marker>
+        {evacSites?.map((site) => (
+          <Marker
+            key={site.id}
+            coordinate={{
+              latitude: site.latitude,
+              longitude: site.longitude,
+            }}
+            onPress={() => handleMarkerPress(site)}
+          >
+            <Callout>
+              <View style={styles.calloutContainer}>
+                <Text style={styles.calloutTitle}>{site.name}</Text>
+                <Text style={styles.calloutSubtitle}>{site.status}</Text>
+              </View>
+            </Callout>
+          </Marker>
+        ))}
         {(routeCoords.length > 0 && directionsAppear) && (
           <Polyline
             coordinates={routeCoords}
@@ -451,6 +475,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  calloutContainer: {
+    maxWidth: 220,
+  },
+  calloutTitle: {
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  calloutSubtitle: {
+    fontSize: 12,
+    color: '#4b5563',
+    marginTop: 2,
+  },
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight, // ensure map sits below status bar
@@ -460,13 +496,13 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
   },
-    paragraph: {
-      fontSize: 18,
-      textAlign: 'center'
-    },
-    loader: {
+  paragraph: {
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  loader: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  }
-})
+  },
+});

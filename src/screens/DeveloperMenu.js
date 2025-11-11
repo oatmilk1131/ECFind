@@ -1,7 +1,10 @@
 import React from 'react';
 import { SafeAreaView, View, Text, TouchableOpacity, Alert } from 'react-native';
 import styles from '../styles/styles';
-export default function DeveloperMenu({ setCurrentScreen }) {
+import { useAuth } from '../context/Auth';
+
+export default function DeveloperMenu({ navigation }) {
+  const { signOut } = useAuth();
   const handleLogout = () => {
     Alert.alert(
       'Logout',
@@ -12,8 +15,8 @@ export default function DeveloperMenu({ setCurrentScreen }) {
           text: 'Logout',
           style: 'destructive',
           onPress: () => {
-            Alert.alert('Success', 'Logged out successfully');
-          }
+            signOut();
+          },
         }
       ]
     );
@@ -60,6 +63,20 @@ export default function DeveloperMenu({ setCurrentScreen }) {
           onPress={() => navigation.navigate('SiteManagerDeletion')}
         >
           <Text style={styles.buttonText}>Site Managers</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('UsersDirectory')}
+        >
+          <Text style={styles.buttonText}>Users Directory</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('DevelopersList')}
+        >
+          <Text style={styles.buttonText}>Developers</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>

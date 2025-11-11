@@ -1,0 +1,136 @@
+{
+  "users": [
+    {
+      "id": "user-001",
+      "name": "Mona Elsa Santos",
+      "username": "mona",
+      "password": "password123",
+      "contactNumber": "09171234567",
+      "role": "resident"
+    },
+    {
+      "id": "user-002",
+      "name": "Ramon Dizon",
+      "username": "ramon",
+      "password": "evac2024",
+      "contactNumber": "09184561234",
+      "role": "manager"
+    },
+    {
+      "id": "user-003",
+      "name": "Grace Lim",
+      "username": "grace",
+      "password": "safehaven",
+      "contactNumber": "09985446721",
+      "role": "manager"
+    },
+    {
+      "id": "user-004",
+      "name": "Dana Velasco",
+      "username": "dana",
+      "password": "devsupport",
+      "contactNumber": "09278889999",
+      "role": "developer"
+    },
+    {
+      "id": "user-005",
+      "name": "Kenji Ocampo",
+      "username": "kenji",
+      "password": "buildsecure",
+      "contactNumber": "09193445566",
+      "role": "developer"
+    },
+    {
+      "id": "user-006",
+      "name": "Luis Navarro",
+      "username": "luis",
+      "password": "resilient",
+      "contactNumber": "09081239876",
+      "role": "resident"
+    }
+  ],
+  "siteManagers": [
+    {
+      "id": "manager-001",
+      "userId": "user-002",
+      "siteId": "site-001",
+      "assignedAt": "2024-05-20T10:00:00Z"
+    },
+    {
+      "id": "manager-002",
+      "userId": "user-003",
+      "siteId": "site-002",
+      "assignedAt": "2024-05-22T09:30:00Z"
+    }
+  ],
+  "developers": [
+    {
+      "id": "dev-001",
+      "userId": "user-004",
+      "title": "Lead Developer"
+    },
+    {
+      "id": "dev-002",
+      "userId": "user-005",
+      "title": "Mobile Engineer"
+    }
+  ],
+  "evacSites": [
+    {
+      "id": "site-001",
+      "name": "Quezon City Memorial Circle",
+      "address": "Elliptical Rd, Diliman, Quezon City",
+      "latitude": 14.6516,
+      "longitude": 121.0494,
+      "capacity": 800,
+      "slotsAvailable": 560,
+      "status": "Open",
+      "contactNumber": "09175551234",
+      "resources": ["Medical team", "Water", "Charging stations"],
+      "managerId": "manager-001",
+      "lastUpdated": "2024-05-25T09:15:00Z"
+    },
+    {
+      "id": "site-002",
+      "name": "UP Diliman Gymnasium",
+      "address": "Magsaysay Ave, Diliman, Quezon City",
+      "latitude": 14.6538,
+      "longitude": 121.0598,
+      "capacity": 600,
+      "slotsAvailable": 320,
+      "status": "Limited",
+      "contactNumber": "09171236754",
+      "resources": ["Sleeping mats", "Food packs"],
+      "managerId": "manager-002",
+      "lastUpdated": "2024-05-24T15:40:00Z"
+    },
+    {
+      "id": "site-003",
+      "name": "New Era Covered Court",
+      "address": "Central Ave, Quezon City",
+      "latitude": 14.6969,
+      "longitude": 121.0468,
+      "capacity": 450,
+      "slotsAvailable": 410,
+      "status": "Open",
+      "contactNumber": "09171110000",
+      "resources": ["Child-friendly space", "Relief goods"],
+      "managerId": null,
+      "lastUpdated": "2024-05-26T08:05:00Z"
+    }
+  ],
+  "pendingRegistrations": [
+    {
+      "id": "pending-001",
+      "name": "Alex Cruz",
+      "contactNumber": "09998887777",
+      "requestedRole": "manager"
+    },
+    {
+      "id": "pending-002",
+      "name": "Bea Santiago",
+      "contactNumber": "09173445566",
+      "requestedRole": "developer"
+    }
+  ]
+}
