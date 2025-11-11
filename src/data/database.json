@@ -1,0 +1,195 @@
+{
+  "credentials": {
+    "users": [
+      {
+        "id": 1,
+        "username": "Antwone",
+        "password": "password123",
+        "email": "antwone@example.com",
+        "role": "developer"
+      },
+      {
+        "id": 2,
+        "username": "admin",
+        "password": "admin123",
+        "email": "admin@example.com",
+        "role": "admin"
+      },
+      {
+        "id": 3,
+        "username": "manager",
+        "password": "manager123",
+        "email": "manager@example.com",
+        "role": "manager"
+      },
+      {
+        "id": 4,
+        "username": "sarah",
+        "password": "sarah123",
+        "email": "sarah@example.com",
+        "role": "user"
+      }
+    ]
+  },
+  "users": {
+    "users": [
+      {
+        "id": 1,
+        "username": "Antwone",
+        "email": "antwone@example.com",
+        "fullName": "Antwone Johnson",
+        "role": "developer",
+        "phone": "555-0201",
+        "createdAt": "2025-01-15"
+      },
+      {
+        "id": 2,
+        "username": "admin",
+        "email": "admin@example.com",
+        "fullName": "Admin User",
+        "role": "admin",
+        "phone": "555-0202",
+        "createdAt": "2025-01-01"
+      },
+      {
+        "id": 3,
+        "username": "manager",
+        "email": "manager@example.com",
+        "fullName": "Martha Dela Cruz",
+        "role": "manager",
+        "phone": "555-0203",
+        "createdAt": "2025-01-05"
+      },
+      {
+        "id": 4,
+        "username": "sarah",
+        "email": "sarah@example.com",
+        "fullName": "Sarah Lim",
+        "role": "user",
+        "phone": "555-0204",
+        "createdAt": "2025-01-08"
+      }
+    ]
+  },
+  "evacuationSites": {
+    "sites": [
+      {
+        "id": 1,
+        "name": "Community Center",
+        "latitude": 9.0765,
+        "longitude": 7.3986,
+        "address": "123 Main St",
+        "capacity": 500,
+        "maxCapacity": 500,
+        "slotsAvailable": 275,
+        "managerName": "John Doe",
+        "contactNumber": "555-0101",
+        "status": "active",
+        "createdBy": 3,
+        "images": [
+          "https://images.unsplash.com/photo-1521737604893-d14cc237f11d",
+          "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?community-center"
+        ],
+        "lastUpdated": "2025-01-05T10:00:00Z"
+      },
+      {
+        "id": 2,
+        "name": "Sports Stadium",
+        "latitude": 9.082,
+        "longitude": 7.41,
+        "address": "456 Sports Ave",
+        "capacity": 1000,
+        "maxCapacity": 1000,
+        "slotsAvailable": 880,
+        "managerName": "Jane Smith",
+        "contactNumber": "555-0102",
+        "status": "active",
+        "createdBy": 3,
+        "images": [
+          "https://images.unsplash.com/photo-1489515217757-5fd1be406fef",
+          "https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf"
+        ],
+        "lastUpdated": "2025-01-08T09:30:00Z"
+      },
+      {
+        "id": 3,
+        "name": "City Hall Grounds",
+        "latitude": 9.09,
+        "longitude": 7.42,
+        "address": "789 Government Plaza",
+        "capacity": 650,
+        "maxCapacity": 650,
+        "slotsAvailable": 410,
+        "managerName": "Carlos Reyes",
+        "contactNumber": "555-0103",
+        "status": "standby",
+        "createdBy": 3,
+        "images": [
+          "https://images.unsplash.com/photo-1469474968028-56623f02e42e"
+        ],
+        "lastUpdated": "2025-01-10T11:15:00Z"
+      }
+    ]
+  },
+  "siteManagers": {
+    "managers": [
+      {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "phone": "555-0101",
+        "siteId": 1,
+        "status": "active"
+      },
+      {
+        "id": 2,
+        "name": "Jane Smith",
+        "email": "jane@example.com",
+        "phone": "555-0102",
+        "siteId": 2,
+        "status": "active"
+      },
+      {
+        "id": 3,
+        "name": "Carlos Reyes",
+        "email": "carlos@example.com",
+        "phone": "555-0103",
+        "siteId": 3,
+        "status": "standby"
+      }
+    ]
+  },
+  "developers": {
+    "developers": [
+      {
+        "id": 1,
+        "name": "Elijah",
+        "email": "elijah@example.com",
+        "role": "Lead Developer",
+        "github": "github.com/elijah"
+      },
+      {
+        "id": 2,
+        "name": "Dev Team",
+        "email": "team@example.com",
+        "role": "Developer",
+        "github": "github.com/ecfind"
+      }
+    ]
+  },
+  "siteManagerRequests": {
+    "requests": [
+      {
+        "id": 2,
+        "userId": 4,
+        "username": "sarah",
+        "fullName": "Sarah Lim",
+        "contactNumber": "555-0204",
+        "reason": "Active volunteer in QC North",
+        "status": "declined",
+        "submittedAt": "2025-01-10T11:00:00Z",
+        "updatedAt": "2025-01-11T12:00:00Z"
+      }
+    ]
+  }
+}
