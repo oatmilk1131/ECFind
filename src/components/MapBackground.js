@@ -138,13 +138,13 @@ const getDirections = async (startLoc, destinationLoc, apiKey) => {
   }
 };
 
-const GoogleMap = ({ onMarkerPress, sites = [], selectedSite = null }) => {
+const GoogleMap = ({ onMarkerPress, sites = [], selectedSite = null, directionsRequestId = 0 }) => {
   const ctx = useContext(LocationContext) || {};
   const location = ctx.location;
   const requestPermission = ctx.requestPermission;
   const error = ctx.error;
   const [closeDirectionsButtonAppear, setCloseDirectionsButtonAppear] = useState(false);
-  const [directionsPressed, setDirectionsPressed] = useState(false);
+  const [directionsSignal, setDirectionsSignal] = useState(0);
   const [errorMsg, setErrorMsg] = useState(null); 
   const navigation = useNavigation();
   const [routeCoords, setRouteCoords] = useState([]);
@@ -193,7 +193,7 @@ const GoogleMap = ({ onMarkerPress, sites = [], selectedSite = null }) => {
   }
   useEffect(() => {
     const fetchRoute = async () => {
-      if (!location?.coords || !selectedSite) return;
+      if (!location?.coords || !selectedSite || directionsSignal === 0) return;
 
       const origin = { latitude: location.coords.latitude, longitude: location.coords.longitude };
       const destination = { latitude: selectedSite.latitude, longitude: selectedSite.longitude };
@@ -201,7 +201,7 @@ const GoogleMap = ({ onMarkerPress, sites = [], selectedSite = null }) => {
       setRouteCoords(coords);
     };
     fetchRoute();
-  }, [directionsPressed, selectedSite, location?.coords]);
+  }, [directionsSignal, selectedSite, location?.coords]);
 
   useEffect(() => {
     if (!selectedSite) {
@@ -210,6 +210,13 @@ const GoogleMap = ({ onMarkerPress, sites = [], selectedSite = null }) => {
       setRouteCoords([]);
     }
   }, [selectedSite]);
+
+  useEffect(() => {
+    if (!selectedSite || directionsRequestId === 0) return;
+    setDirectionsAppear(true);
+    setCloseDirectionsButtonAppear(true);
+    setDirectionsSignal((prev) => prev + 1);
+  }, [directionsRequestId, selectedSite]);
   
     if (!location) {
       return (
@@ -240,6 +247,7 @@ const GoogleMap = ({ onMarkerPress, sites = [], selectedSite = null }) => {
   const handleCloseDirectionsPress = () => {
     setCloseDirectionsButtonAppear(false);
     setDirectionsAppear(false);
+    setRouteCoords([]);
   }
 
   const handleSearchIconPress = () => {
@@ -256,7 +264,7 @@ const GoogleMap = ({ onMarkerPress, sites = [], selectedSite = null }) => {
     if (!selectedSite) return;
     setDirectionsAppear(true);
     setCloseDirectionsButtonAppear(true);
-    setDirectionsPressed(!directionsPressed);
+    setDirectionsSignal((prev) => prev + 1);
   };
 
     let text = 'Waiting for location...'; 
@@ -317,6 +325,9 @@ const GoogleMap = ({ onMarkerPress, sites = [], selectedSite = null }) => {
               <View style={styles.callout}>
                 <Text style={styles.calloutTitle}>{site.name}</Text>
                 <Text style={styles.calloutSubtitle}>{site.address}</Text>
+                {site.images?.length > 0 && (
+                  <Image source={{ uri: site.images[0] }} style={styles.calloutImage} />
+                )}
               </View>
             </Callout>
           </Marker>
@@ -486,9 +497,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#4b5563',
   },
+  calloutImage: {
+    width: 120,
+    height: 80,
+    borderRadius: 8,
+    marginTop: 6,
+  },
   siteMarker: {
-    width: 30,
-    height: 30,
+    width: 32,
+    height: 32,
     resizeMode: 'contain',
   },
 });

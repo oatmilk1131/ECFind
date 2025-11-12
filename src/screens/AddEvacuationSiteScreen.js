@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import Header from '../components/Header';
 import AddEvacLocOnMap from '../components/AddEvacLocOnMap';
 import { useAuth } from '../context/Auth';
@@ -34,7 +34,7 @@ const AddEvacuationSiteScreen = ({ navigation }) => {
       />
 
       <AddEvacLocOnMap
-        instruction="Tap on the map to select location"
+        instruction={returnTo ? 'Tap on the map to update the location' : 'Tap on the map to select location'}
         initialCoordinate={initialCoordinate}
         onLocationSelected={(coordinate) => {
           if (returnTo) {

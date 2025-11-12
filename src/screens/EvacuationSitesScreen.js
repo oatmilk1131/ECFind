@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import { loadEvacuationSites, updateSiteStatus } from '../utils/dataService';
 import styles from '../styles/styles';
 import StyleButton from '../components/StyleButton';
@@ -88,6 +88,12 @@ const EvacuationSitesScreen = ({ navigation, route }) => {
           >
             <Text style={styles.siteName}>{item.name}</Text>
             <Text style={styles.siteAddress}>{item.address}</Text>
+            {item.images?.length > 0 && (
+              <Image
+                source={{ uri: item.images[0] }}
+                style={{ width: '100%', height: 140, borderRadius: 10, marginTop: 8 }}
+              />
+            )}
             <Text style={styles.siteCapacity}>
               Capacity: {item.maxCapacity ?? item.capacity ?? '—'} people
             </Text>

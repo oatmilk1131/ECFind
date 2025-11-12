@@ -150,7 +150,7 @@ const getDirections = async (startLoc, destinationLoc, apiKey) => {
   }
 };
 
-const AddEvacLocOnMap = ({ instruction, onLocationSelected, initialCoordinate }) => {
+const AddEvacLocOnMap = ({ instruction = '', onLocationSelected, initialCoordinate }) => {
   const ctx = useContext(LocationContext) || {};
   const location = ctx.location;
   const requestPermission = ctx.requestPermission;
@@ -257,11 +257,11 @@ const handleSearchIconPress = () => {
 
   return (
     <View style={styles.container}>
-      {instruction && (
-        <View style={styles.instructionBanner}>
+      {instruction ? (
+        <View style={styles.instructionBanner} pointerEvents="none">
           <Text style={styles.instructionText}>{instruction}</Text>
         </View>
-      )}
+      ) : null}
       <MapView
         ref={mapRef}
         onPress={(event) => {

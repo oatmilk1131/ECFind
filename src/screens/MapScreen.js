@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { View, StatusBar, Dimensions, Animated, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, StatusBar, Dimensions, Animated, Text, FlatList, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import MapBackground from '../components/MapBackground';
 import BottomSheet from '../components/BottomSheet';
 import Header from '../components/Header';
@@ -13,6 +13,7 @@ const MapScreen = ({ navigation }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedSite, setSelectedSite] = useState(null);
   const [sites, setSites] = useState([]);
+  const [directionsRequestId, setDirectionsRequestId] = useState(0);
   const bottomSheetHeight = useRef(new Animated.Value(BOTTOM_SHEET_MIN_HEIGHT)).current;
 
   useFocusEffect(
@@ -63,6 +64,11 @@ const MapScreen = ({ navigation }) => {
     expandBottomSheet();
   };
 
+  const handleDirectionsRequest = () => {
+    if (!selectedSite) return;
+    setDirectionsRequestId((prev) => prev + 1);
+  };
+
   const renderSiteCard = ({ item }) => (
     <TouchableOpacity style={sheetStyles.siteCard} onPress={() => handleSiteCardPress(item)}>
       <View style={sheetStyles.siteCardHeader}>
@@ -92,6 +98,7 @@ const MapScreen = ({ navigation }) => {
         sites={sites}
         selectedSite={selectedSite}
         onMarkerPress={handleMarkerPress}
+        directionsRequestId={directionsRequestId}
       />
 
       <BottomSheet
@@ -105,6 +112,12 @@ const MapScreen = ({ navigation }) => {
       >
         {selectedSite ? (
           <View>
+            {selectedSite.images?.length > 0 && (
+              <Image
+                source={{ uri: selectedSite.images[0] }}
+                style={{ width: '100%', height: 160, borderRadius: 12, marginBottom: 12 }}
+              />
+            )}
             <Text style={sheetStyles.detailHeading}>Address</Text>
             <Text style={sheetStyles.detailValue}>{selectedSite.address}</Text>
 
@@ -138,6 +151,9 @@ const MapScreen = ({ navigation }) => {
 
             <TouchableOpacity style={sheetStyles.clearSelectionButton} onPress={() => setSelectedSite(null)}>
               <Text style={sheetStyles.clearSelectionText}>Back to list</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[sheetStyles.clearSelectionButton, { marginTop: 12, backgroundColor: '#2563eb' }]} onPress={handleDirectionsRequest}>
+              <Text style={[sheetStyles.clearSelectionText, { color: '#fff' }]}>Get Directions</Text>
             </TouchableOpacity>
           </View>
         ) : (
@@ -193,6 +209,12 @@ const sheetStyles = StyleSheet.create({
     fontSize: 14,
     color: '#4b5563',
     marginBottom: 4,
+  },
+  siteImage: {
+    width: '100%',
+    height: 140,
+    borderRadius: 10,
+    marginTop: 6,
   },
   siteMeta: {
     fontSize: 13,

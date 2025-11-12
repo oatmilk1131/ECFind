@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { useAuth } from '../context/Auth';
 import StyleButton from '../components/StyleButton';
 import AppBackground from '../components/AppBackground';
@@ -7,7 +7,7 @@ import {ArrowLeftIcon, PencilSquareIcon} from 'react-native-heroicons/solid';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import StyleTextInput from '../components/StyleTextInput';
 import ProfileEditCard from '../components/ProfileEdit';
-import { loadUsers, loadSiteManagerRequests } from '../utils/dataService';
+import { loadSiteManagerRequests } from '../utils/dataService';
 import styles from '../styles/styles';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -15,13 +15,7 @@ import { useFocusEffect } from '@react-navigation/native';
 export default function UserProfileScreen({navigation}) {
 
   const { logOut, user } = useAuth();
-  const [allUsers, setAllUsers] = useState([]);
   const [requestStatus, setRequestStatus] = useState(null);
-
-  useEffect(() => {
-    const data = loadUsers();
-    setAllUsers(data.users);
-  }, []);
 
   const refreshRequestStatus = useCallback(() => {
     if (!user?.id) {
@@ -245,27 +239,16 @@ export default function UserProfileScreen({navigation}) {
 
             </View>
 
-            <View style={styles.container}>
-      <Text style={styles.title}>Users</Text>
-      {user && (
-        <View style={styles.card}>
-          <Text style={styles.label}>Current User: {user.username}</Text>
-          <Text style={styles.label}>Email: {user.email}</Text>
-          <Text style={styles.label}>Role: {user.role}</Text>
-        </View>
-      )}
-      <FlatList
-        data={allUsers}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.userCard}>
-            <Text style={styles.userName}>{item.fullName}</Text>
-            <Text style={styles.userEmail}>{item.email}</Text>
-            <Text style={styles.userRole}>{item.role}</Text>
-          </View>
-        )}
-      />
-    </View>
+            {user && (
+              <View style={{ padding: 20 }}>
+                <Text style={styles.title}>Current User</Text>
+                <View style={styles.card}>
+                  <Text style={styles.label}>Username: {user.username}</Text>
+                  <Text style={styles.label}>Email: {user.email}</Text>
+                  <Text style={styles.label}>Role: {user.role}</Text>
+                </View>
+              </View>
+            )}
 
           
         </SafeAreaView>
